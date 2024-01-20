@@ -1,7 +1,7 @@
 require("dotenv").config();
 const { PORT, DB_URL } = process.env;
 // connect to database
-require("./db").connectToMongo();
+require("./config/db").connectToMongo();
 //======================config app
 const http = require("http");
 const express = require("express");
