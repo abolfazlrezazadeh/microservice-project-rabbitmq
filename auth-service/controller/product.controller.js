@@ -3,12 +3,15 @@ const controller = require("./controller");
 const { StatusCodes: httpStatus } = require("http-status-codes");
 const createError = require("http-errors");
 const { validateEmail } = require("./validator/auth.validator");
-class productController extends controller {
+class productController {
   async registerUser(req, res, user) {
     try {
       const { name, email, password } = req.body;
       await validateEmail.validateAsync(req.body);
-      const existUser = await this.existUser(email);
+      // find user
+      const existUser = await userModel.findOne({ email });
+      if (existUser) throw createError.BadRequest("user is already exist");
+      // create 
       const userRegistred = await userModel.create({ name, email, password });
       if (!userRegistred)
         throw createError.InternalServerError("please try again");
@@ -27,11 +30,6 @@ class productController extends controller {
     } catch (error) {
       next(error);
     }
-  }
-  async existUser(email) {
-    const existUser = await userModel.findOne({ email });
-    if (existUser) throw createError.BadRequest("user is already exist");
-    return existUser;
   }
 }
 
