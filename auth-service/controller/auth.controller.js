@@ -3,8 +3,8 @@ const controller = require("./controller");
 const { StatusCodes: httpStatus } = require("http-status-codes");
 const createError = require("http-errors");
 const { validateEmail } = require("./validator/auth.validator");
-class productController {
-  async registerUser(req, res, user) {
+class authController {
+  async registerUser(req, res, next) {
     try {
       const { name, email, password } = req.body;
       await validateEmail.validateAsync(req.body);
@@ -35,5 +35,5 @@ class productController {
 
 
 module.exports = {
-    productController : new productController()
+    authController : new authController()
 }

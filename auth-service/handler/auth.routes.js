@@ -1,10 +1,10 @@
-const { productController } = require("../controller/product.controller");
+const { authController } = require("../controller/auth.controller");
 
 const router = require("express").Router();
 
-router.post("/register" , productController.registerUser)
+router.post("/register" , authController.registerUser)
 
 
 module.exports={
-    productRoute : router
+    authRoutes : router
 }
