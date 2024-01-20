@@ -27,7 +27,7 @@ class authController {
       next(error);
     }
   }
-  async loginUser(req, res, user) {
+  async loginUser(req, res, next) {
     try {
       const {email, password} = req.body;
       await validateEmail.validateAsync(req.body);
