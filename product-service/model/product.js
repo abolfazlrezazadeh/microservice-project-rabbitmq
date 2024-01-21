@@ -7,5 +7,5 @@ const productSchema = new mongoose.Schema({
 });
 
 module.exports = {
-  prosuctModedl: mongoose.model("product", productSchema),
+  productModedel: mongoose.model("product", productSchema),
 };
