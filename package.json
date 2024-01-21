@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@hapi/joi": "^17.1.1",
     "http-errors": "^2.0.0",
     "http-status-codes": "^2.3.0"
   }
