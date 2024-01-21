@@ -26,13 +26,13 @@ class productCOntroler {
       next(error);
     }
   }
-  async createProduct(req, res, next) {
+  async createProddduct(req, res, next) {
     try {
     } catch (error) {
       next(error);
     }
   }
-  async createProduct(req, res, next) {
+  async createssProduct(req, res, next) {
     try {
     } catch (error) {
       next(error);
