@@ -27,7 +27,6 @@ class productCOntroler {
     }
   }
   async buyProducts(req, res, next) {
-    
     try {
     } catch (error) {
       next(error);
