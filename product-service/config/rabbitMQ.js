@@ -29,4 +29,4 @@ module.exports = {
     pushToQueue,
     returnChannel,
     connectToChannel
-}
+} 
