@@ -16,6 +16,12 @@ const returnChannel = async () => {
   return channel;
 };
 
+const createQueue = async (queueName) => {
+  const channel = await returnChannel();
+  await channel.assertQueue(queueName);
+  return channel;
+};
+
 const pushToQueue = async (queueName, data) => {
   try {
     await channel.assertQueue(queueName);
@@ -28,5 +34,6 @@ const pushToQueue = async (queueName, data) => {
 module.exports = {
     pushToQueue,
     returnChannel,
+    createQueue,
     connectToChannel
 } 
