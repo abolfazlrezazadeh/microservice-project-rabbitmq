@@ -5,7 +5,7 @@ async function isAuth(req, res, next) {
   try {
     const token = req.headers?.["authorization"]?.split(" ")[0] || "";
     jwt.verify(token, "secretKey", (error, paylod) => {
-      if (err) {
+      if (error) {
         return res.status(httpStatus[401]).json({
           statusCode: httpStatus[401],
           data: {
@@ -17,8 +17,8 @@ async function isAuth(req, res, next) {
       next();
     });
   } catch (error) {
-    return res.status(httpStatus[401]).json({
-      statusCode: httpStatus[401],
+    return res.status(httpStatus.UNAUTHORIZED).json({
+      statusCode: httpStatus.UNAUTHORIZED,
       data: {
         error: error.message,
       },

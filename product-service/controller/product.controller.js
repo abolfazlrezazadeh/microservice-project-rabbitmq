@@ -3,7 +3,7 @@ const { StatusCodes: httpStatus } = require("http-status-codes");
 const createError = require("http-errors");
 const { productValidator } = require("./validator/product.validator");
 const { productModedel } = require("../model/product");
-const { pushToQueue } = require("../config/rabbitMQ");
+const { pushToQueue, createQueue } = require("../config/rabbitMQ");
 
 class productCOntroler {
   async createProduct(req, res, next) {
@@ -35,7 +35,12 @@ class productCOntroler {
       const products = await productModedel.find({ _id: { $in: productIDs } });
       // send datas
       await pushToQueue("ORDER", { products, userEmail: email });
+      const channel = await createQueue("PRODUCT");
+      channel.consume("PRODUCT", (msg) => {
+        // console.log(JSON.parse(msg.content.toString()));
+      });
     } catch (error) {
+      console.log(error);
       next(error);
     }
   }

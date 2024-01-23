@@ -5,7 +5,7 @@ const connectToChannel = async () => {
     const connection = await amqp.connect("amqp://localhost:5672");
     return await connection.createChannel();
   } catch (error) {
-    return console.log("can not connect to channel in rabbitmq");
+    return console.log("can not connect to channel in rabbitmq",error);
   }
 };
 
@@ -24,10 +24,11 @@ const createQueue = async (queueName) => {
 
 const pushToQueue = async (queueName, data) => {
   try {
+    await returnChannel()
     await channel.assertQueue(queueName);
     return channel.sendToQueue(queueName, Buffer.from(JSON.stringify(data)));
   } catch (error) {
-    console.log(error.message);
+    console.log(error);
   }
 };
 

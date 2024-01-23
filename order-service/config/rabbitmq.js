@@ -6,7 +6,7 @@ const connectToChannel = async () => {
     const connection = await amqp.connect("amqp://localhost:5672");
     return await connection.createChannel();
   } catch (error) {
-    return console.log("can not connect to channel in rabbitmq");
+    return console.log("can not connect to channel in rabbitmq", error);
   }
 };
 
@@ -18,9 +18,9 @@ const returnChannel = async () => {
 };
 
 const createQueue = async (queueName) => {
-    const channel = await returnChannel();
-    await channel.assertQueue(queueName);
-    return channel;
+  const channel = await returnChannel();
+  await channel.assertQueue(queueName);
+  return channel;
 };
 
 const pushToQueue = async (queueName, data) => {
@@ -29,7 +29,7 @@ const pushToQueue = async (queueName, data) => {
     await channel.assertQueue(queueName);
     return channel.sendToQueue(queueName, Buffer.from(JSON.stringify(data)));
   } catch (error) {
-    console.log(error.message);
+    console.log(error);
   }
 };
 
@@ -37,17 +37,21 @@ const createOrderwithQueue = async (queueName) => {
   await createQueue(queueName);
   await channel.consume(queueName, async (message) => {
     if (message.content) {
-      const { products, userEmail } = JSON.parse(message.connect.toString());
+      const { products, userEmail } = JSON.parse(message.content.toString());
       // Calculate the total money of the products
-      const totalPrice = (products
-        .map((p) => +p.price))
+      const totalPrice = products
+        .map((p) => +p.price)
         .reduce((prev, current) => {
-          prev + current, 0;
-        });
-      const newOrder = await orderModel.create({ products, userEmail,totalPrice });
+          return prev + current;
+        }, 0);
+      const newOrder = await orderModel.create({
+        products,
+        userEmail,
+        totalPrice,
+      });
       // confirm message
-      channel.ack(message)
-      await pushToQueue("PRODUCT",newOrder)
+      channel.ack(message);
+      await pushToQueue("PRODUCT", newOrder);
     }
   });
 };
