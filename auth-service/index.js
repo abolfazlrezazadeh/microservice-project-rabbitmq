@@ -13,7 +13,7 @@ app.use(express.urlencoded({ extended: true }));
 // const http = require("http");
 // const server = http.createServer(app);
 app.listen(PORT, () => {
-  console.log(`http://localhost:${PORT}`);
+  console.log(`auth service running on port ${PORT}`);
 });
 // router
 app.use("/auth", authRoutes);
